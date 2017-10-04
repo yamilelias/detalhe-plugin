@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: Plugin Name
+ * Plugin Name: Detalhe Core Plugin
  * Plugin URI: http://www.domain.tld
  * Description: Plugin description.
  * Version: 1.0.0
@@ -29,24 +29,18 @@ defined('DS') ? DS : define('DS', DIRECTORY_SEPARATOR);
  *
  * Please update (search and replace) all constants calls found in this file.
  *
- * TODO: #1
- * TODO: #2 - Update plugin textdomain first argument below.
  */
-defined('MY_PLUGIN_TD') ? MY_PLUGIN_TD : define('MY_PLUGIN_TD', 'plugin-textdomain');
+defined('DETALHE_CORE_TD') ? DETALHE_CORE_TD : define('DETALHE_CORE_TD', 'detalhe-core');
 
 /*
  * Plugin variables.
  * Configure your plugin.
- *
- * TODO: #3 - Define your own values.
- * TODO: #4 - Update the config files names located into the `resources/config` folder.
- * TODO: #5 - Update class namespaces.
  */
 $vars = [
-    'slug' => 'plugin-key',
-    'name' => 'Plugin Name',
-    'namespace' => 'tld.domain.plugin',
-    'config' => 'tld_domain_plugin',
+    'slug' => 'detalhe-core',
+    'name' => 'Detalhe Core',
+    'namespace' => 'com.detalhe.core',
+    'config' => 'com_detalhe_core',
 ];
 
 /*
@@ -54,7 +48,7 @@ $vars = [
  */
 add_action('admin_notices', function () use ($vars) {
     if (!class_exists('\Themosis\Foundation\Application')) {
-        printf('<div class="notice notice-error"><p>%s</p></div>', __('This plugin requires the Themosis framework in order to work.', MY_PLUGIN_TD));
+        printf('<div class="notice notice-error"><p>%s</p></div>', __('This plugin requires the Themosis framework in order to work.', DETALHE_CORE_TD));
     }
 
     /*
@@ -62,7 +56,7 @@ add_action('admin_notices', function () use ($vars) {
      * into your theme `supports.config.php` in order to remove this admin notice.
      */
     if (!current_theme_supports($vars['slug']) && current_user_can('switch_themes')) {
-        printf('<div class="notice notice-warning"><p>%s<strong>%s</strong></p></div>', __('Your application does not handle the following plugin: ', MY_PLUGIN_TD), $vars['name']);
+        printf('<div class="notice notice-warning"><p>%s<strong>%s</strong></p></div>', __('Your application does not handle the following plugin: ', DETALHE_CORE_TD), $vars['name']);
     }
 });
 
@@ -126,9 +120,8 @@ container('action')->add('plugins_loaded', function () use ($vars) {
 
 	/**
 	 * I18n
-	 * Todo: #2 - Replace constant below.
 	 */
-	load_plugin_textdomain(MY_PLUGIN_TD, false, trailingslashit(dirname(plugin_basename(__FILE__))).'languages');
+	load_plugin_textdomain(DETALHE_CORE_TD, false, trailingslashit(dirname(plugin_basename(__FILE__))).'languages');
 
     /*
      * Plugin admin files.
