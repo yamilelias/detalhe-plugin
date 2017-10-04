@@ -2,12 +2,12 @@
 
 /**
  * Plugin Name: Detalhe Core Plugin
- * Plugin URI: http://www.domain.tld
- * Description: Plugin description.
+ * Plugin URI: https://github.com/yamilelias/detalhe-plugin
+ * Description: Plugin created to add custom functionality for Detalhe Store.
  * Version: 1.0.0
- * Author: Your name
- * Author URI: http://framework.themosis.com/
- * Text Domain: plugin-textdomain.
+ * Author: Yamil Elías <yamileliassoto@gmail.com>
+ * Author URI: https://yamilelias.github.io
+ * Text Domain: detalhe-core-wpp.
  * Domain Path: /languages
  */
 
