@@ -56,7 +56,7 @@ add_action('admin_notices', function () use ($vars) {
      * into your theme `supports.config.php` in order to remove this admin notice.
      */
     if (!current_theme_supports($vars['slug']) && current_user_can('switch_themes')) {
-        printf('<div class="notice notice-warning"><p>%s<strong>%s</strong></p></div>', __('Your application does not handle the following plugin: ', DETALHE_CORE_TD), $vars['name']);
+//        printf('<div class="notice notice-warning"><p>%s<strong>%s</strong></p></div>', __('Your application does not handle the following plugin: ', DETALHE_CORE_TD), $vars['name']);
     }
 });
 
