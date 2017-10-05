@@ -11,7 +11,7 @@ namespace Com\Detalhe\Core\Helpers;
 /**
  * Customize Class. Handles functions to customize Pages, Taxonomies, Metaboxes and PostTypes.
  *
- * @package Style\Wtf\Core\Helpers
+ * @package Com\Detalhe\Core\Helpers
  * @since   1.0.0
  * @author  Yamil Elias <yamil@wtf.style>
  * @see     Components

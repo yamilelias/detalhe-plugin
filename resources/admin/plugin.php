@@ -1,6 +1,6 @@
 <?php
 
-use Com\Detalhe\Core\Controllers\PostTypes;
+use Com\Detalhe\Core\Controllers\{PostTypes, Metaboxes};
 
 /**
  * Write your plugin custom code below.
@@ -14,4 +14,5 @@ $loader->add([
 $loader->load();
 
 // Load controllers to action
+Metaboxes::init();
 PostTypes::init();

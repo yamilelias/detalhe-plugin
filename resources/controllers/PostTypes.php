@@ -15,7 +15,7 @@ use Themosis\Facades\PostType;
 /**
  * PostTypes Class. Initialize and manage all the PostType::any used by Themosis.
  *
- * @package     Style\Wtf\Core\Controllers
+ * @package     Com\Detalhe\Core\Controllers
  * @since       1.0.0
  * @author      Yamil Elias <yamil@wtf.style>
  */
