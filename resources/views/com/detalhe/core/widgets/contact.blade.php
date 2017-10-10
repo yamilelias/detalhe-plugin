@@ -11,7 +11,7 @@ use Themosis\Facades\Form;
 ?>
 
 <h3>Contact</h3>
-{!! Form::open(get_page(), 'post', false, [
+{!! Form::open(get_template_directory_uri() . '/mailing.php', 'post', false, [
     'class'       => 'footer-form',
     'id'          => 'register-form'
 ]) !!}
