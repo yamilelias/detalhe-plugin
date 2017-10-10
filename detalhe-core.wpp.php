@@ -66,6 +66,7 @@ add_action('admin_notices', function () use ($vars) {
 $paths['plugin.'.$vars['namespace']] = __DIR__.DS;
 $paths['plugin.'.$vars['namespace'].'.resources'] = __DIR__.DS.'resources'.DS;
 $paths['plugin.'.$vars['namespace'].'.admin'] = __DIR__.DS.'resources'.DS.'admin'.DS;
+$paths['plugin.'.$vars['namespace'].'.vendor'] = __DIR__.DS.'vendor'.DS;
 
 themosis_set_paths($paths);
 
@@ -138,3 +139,7 @@ container('action')->add('plugins_loaded', function () use ($vars) {
 /*
  * Add extra features below.
  */
+
+// Define Constants and Variables
+define('DETALHE_PLUGIN_PATH', __DIR__ . DS);
+define('DETALHE_PLUGIN_REL_PATH', '/' . basename(dirname(dirname(dirname(__FILE__)))) . '/' . basename(dirname(dirname(__FILE__))) . '/' . basename(dirname(__FILE__)) . DS);
