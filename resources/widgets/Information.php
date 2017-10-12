@@ -17,7 +17,7 @@ class Information_Widget extends WP_Widget
     public function __construct()
     {
         $params = [
-            'description' => 'This widget will display the information about payments accepted, terms and conditions page and copyright shown.',
+            'description' => 'Display terms and conditions and copyright in a widget.',
             'name'        => 'Detalhe Information'
         ];
 
