@@ -8,6 +8,8 @@
 ?>
 
 <div class="social-media-container">
-    <div class="facebook icon"><i class="icon ion-social-facebook"></i></div>
-    <div class="instagram icon"><i class="icon ion-social-instagram"></i></div>
+    <div class="row">
+        <i class="icon ion-social-facebook"></i>
+        <i class="icon ion-social-instagram"></i>
+    </div>
 </div>
