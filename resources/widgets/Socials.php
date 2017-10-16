@@ -19,7 +19,7 @@ class Socials_Widget extends WP_Widget
     {
         $params = [
             'description' => 'You have social media accounts? Show it to your customers!',
-            'name'        => 'Social Media Icons'
+            'name'        => 'Social Media Pages'
         ];
 
         parent::__construct('Socials_Widget', '', $params);
@@ -33,8 +33,16 @@ class Socials_Widget extends WP_Widget
      * @param array $instance
      */
     public function widget( $args, $instance ) {
+        $facebook = ! empty($instance['facebook']) ? $instance['facebook'] : '#';
+        $instagram = ! empty($instance['instagram']) ? $instance['instagram'] : '#';
+
         echo $args['before_widget'];
-        echo view('com.detalhe.core.widgets.socials');
+
+        echo view('com.detalhe.core.widgets.socials', [
+            'facebook' => $facebook,
+            'instagram' => $instagram
+        ]);
+
         echo $args['after_widget'];
     }
 

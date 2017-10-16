@@ -7,9 +7,9 @@
  */
 ?>
 
-<div class="social-media-container">
+<div class="social-media-widget">
     <div class="row">
-        <i class="icon ion-social-facebook"></i>
-        <i class="icon ion-social-instagram"></i>
+        <a href="<?php echo $facebook ?>"><i class="icon ion-social-facebook"></i></a>
+        <a href="<?php echo $instagram ?>"><i class="icon ion-social-instagram"></i></a>
     </div>
 </div>
