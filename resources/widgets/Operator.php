@@ -32,7 +32,9 @@ class Operator_Widget extends WP_Widget
      * @param array $instance
      */
     public function widget( $args, $instance ) {
-        echo view('com.detalhe.core.widgets.contact');
+        echo $args['before_widget'];
+        echo view('com.detalhe.core.widgets.operators');
+        echo $args['after_widget'];
     }
 
     /**
@@ -46,21 +48,25 @@ class Operator_Widget extends WP_Widget
 
         // Default operators
         $operators = array(
-            'mastercard'       => 'Mastercard',
-            'visa'             => 'Visa',
-            'american-express' => 'American Express',
-            'paypal'           => 'PayPal'
+            'mastercard',       //=> 'Mastercard',
+            'visa',             //=> 'Visa',
+            'american-express', //=> 'American Express',
+            'paypal',           //=> 'PayPal'
         );
 
-        // Check if there are already operators in the instance, if not, save them for display
-        $instance = !empty($instance) ? $instance : $operators;
+        // Check if there are already operators in the instance, if not, set them
+        foreach ($operators as $operator) {
+            $instance[ $operator ] = $operator;
+        }
 
-        foreach ( $instance as $item => $value ) {
+        // Check if there are already operators in the instance, if not, save them for display
+//        $instance = !empty($instance) ? $instance : $operators;
+
+        foreach ( $instance as $key => $value ) {
             $title = ! empty( $value ) ? $value : esc_html__( "New item", 'Operator_Widget' );
             ?>
-            <p>
-                <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( $item ) ); ?>" name="<?php echo $value; ?>" type="checkbox" <?php checked( $instance[ $item ], $value ); ?> value="<?php echo $value; ?>">
-                <label for="<?php echo esc_attr( $this->get_field_id( $item ) ); ?>"><?php esc_attr_e( $title, 'text_domain' ); ?></label>
+                <input class="checkbox" id="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>" name="<?php echo $this->get_field_name( $value ); ?>" type="checkbox" <?php checked( $instance[ $key ], 'on' ); ?> />
+                <label for="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"><?php esc_attr_e( $title, 'Operator_Widget' ); ?></label>
             </p>
             <?php
         }
@@ -77,9 +83,15 @@ class Operator_Widget extends WP_Widget
     public function update( $new_instance, $old_instance ) {
         $instance = $old_instance;
 
-        foreach ( $new_instance as $key => $value ) {
-            $instance[ $key ] = $value;
+//        $instance[ 'mastercard' ] = $new_instance[ 'mastercard' ];
+//        $instance[ 'visa' ] = $new_instance[ 'visa' ];
+//        $instance[ 'american-express' ] = $new_instance[ 'american-express' ];
+//        $instance[ 'paypal' ] = $new_instance[ 'paypal' ];
+
+        foreach ( $new_instance as $item ) {
+            $instance[ $item ] = isset($item) ? $item : '';
         }
+
         return $instance;
     }
 }
