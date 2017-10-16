@@ -32,16 +32,20 @@ class Information_Widget extends WP_Widget
      * @param array $instance
      */
     public function widget( $args, $instance ) {
-        $title = apply_filters( 'widget_title', $instance['title'] );
+        $terms = apply_filters( 'widget_terms', $instance['terms'] );
+        $copyright = apply_filters( 'widget_copyright', $instance['copyright'] );
 
         // before and after widget arguments are defined by themes
         echo $args['before_widget'];
-        if ( ! empty( $title ) ) {
-            echo $args['before_title'] . $title . $args['after_title'];
-        }
 
-        // This is where you run the code and display the output
-        echo __( 'Hello, World!', 'Information_Widget' );
+        $terms = ! empty($terms) ? $terms : '/terms-and-conditions';
+        $copyright = ! empty($copyright) ? $copyright : 'Copyright 2017 &copy;';
+
+        echo view('com.detalhe.core.widgets.information', [
+                'copyright' => $copyright,
+                'terms'     => $terms
+        ]);
+
         echo $args['after_widget'];
     }
 
@@ -53,22 +57,31 @@ class Information_Widget extends WP_Widget
      * @return string Admin form
      */
     public function form( $instance ) {
-        if ( isset( $instance[ 'title' ] ) ) {
-            $title = $instance[ 'title' ];
+        if ( isset( $instance[ 'terms' ] ) ) {
+            $terms = $instance[ 'terms' ];
         }
         else {
-            $title = __( 'New title', 'Information_Widget' );
+            $terms = __( 'Terms & Conditions', 'Information_Widget' );
+        }
+
+        if ( isset( $instance[ 'copyright' ] ) ) {
+            $copyright = $instance[ 'copyright' ];
+        }
+        else {
+            $copyright = __( 'Copyright', 'Information_Widget' );
         }
 
         // Widget admin form
         ?>
         <p>
-            <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
-            <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+            <label for="<?php echo $this->get_field_id( 'terms' ); ?>"><?php _e( 'Terms & Conditions:' ); ?></label>
+            <input class="widefat" id="<?php echo $this->get_field_id( 'terms' ); ?>" name="<?php echo $this->get_field_name( 'terms' ); ?>" type="text" value="/terms-and-conditions" />
+            <small class="text-muted">Please add a relative path to the terms & conditions page. Example: '/terms-and-conditions' or '/pages/terms'</small>
         </p>
         <p>
-            <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Copyright:' ); ?></label>
-            <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+            <label for="<?php echo $this->get_field_id( 'copyright' ); ?>"><?php _e( 'Copyright:' ); ?></label>
+            <input class="widefat" id="<?php echo $this->get_field_id( 'copyright' ); ?>" name="<?php echo $this->get_field_name( 'copyright' ); ?>" type="text" value="<?php echo esc_attr( $copyright ); ?>" />
+<!--            <small class="text-muted">Set your copyright message. Hint: to add copyright symbol (&#169;) please add this code: <code>--><?php //htmlentities('&copy;') ?><!--</code>.</code></small>-->
         </p>
         <?php
     }
@@ -83,7 +96,9 @@ class Information_Widget extends WP_Widget
      */
     public function update( $new_instance, $old_instance ) {
         $instance = array();
-        $instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+        $instance['terms'] = ( ! empty( $new_instance['terms'] ) ) ? strip_tags( $new_instance['terms'] ) : '';
+        $instance['copyright'] = ( ! empty( $new_instance['copyright'] ) ) ? strip_tags( $new_instance['copyright'] ) : '';
+
         return $instance;
     }
 }

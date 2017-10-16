@@ -32,7 +32,9 @@ class Contact_Widget extends WP_Widget
      * @param array $instance
      */
     public function widget( $args, $instance ) {
+        echo $args['before_widget'];
         echo view('com.detalhe.core.widgets.contact');
+        echo $args['after_widget'];
     }
 
     /**
