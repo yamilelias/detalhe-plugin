@@ -38,17 +38,17 @@ class Metaboxes extends BaseController
      * @since 1.0.0
      */
     public static function init(){
-        self::navigation_banner_per_brand();
+        self::items_needed_for_brands();
         self::brand_for_product_post_type_metabox();
     }
 
     /**
-     * Set a metabox for the user to define the header that will appear for each brand.
+     * Set different metaboxes for the user to define the avything needed for each brand.
      *
      * @since 1.0.0
      */
-    public static function navigation_banner_per_brand(){
-        Metabox::make('Customized Banner', 'brand', [
+    public static function items_needed_for_brands(){
+        Metabox::make('Customized Brand', 'brand', [
             'context'  => 'normal',
             'priority' => 'high',
             'id'       => 'brand-banner-metabox'

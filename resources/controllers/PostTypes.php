@@ -59,7 +59,7 @@ class PostTypes extends BaseController
             'show_in_menu' => true,
             'show_in_admin_bar' => true,
             'menu_position' => 100.39190543265627,
-            'menu_icon' => 'dashicons-shield-alt',
+            'menu_icon' => 'dashicons-heart',
             'capability_type' => 'page',
             'hierarchical' => false,
             'has_archive' => false,
