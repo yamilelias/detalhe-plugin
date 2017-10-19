@@ -33,7 +33,7 @@ use Themosis\Facades\Form;
         'class' => 'input-message',
         'placeholder' => 'Message',
         'cols' => 50,
-        'rows' => 4
+        'rows' => 2
         ]) !!}
     {!! Form::submit('submit', 'Submit', [
         'id' => 'awesome',

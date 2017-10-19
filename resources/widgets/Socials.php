@@ -1,7 +1,5 @@
 <?php
 
-use Themosis\Facades\Field;
-
 /**
  * Class Socials_Widget. Display the social media that the company have.
  *
