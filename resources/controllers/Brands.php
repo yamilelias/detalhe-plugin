@@ -78,19 +78,19 @@ class Brands extends BaseController
         // Assign the header if at the end exists a brand
         if(self::have_brand()){
             $banner_id = Meta::get($brand->ID, 'brand-header-banner', true); // Get the header banner ID
-            $brand->header_banner = wp_get_attachment_image_src($banner_id, 'full')[0]; // Get the image
+            $brand->header_banner = wp_get_attachment_image_src($banner_id, 'full'); // Get the image
         }
 
         return $brand;
     }
 
     /**
-     * Returns if the current site have a brand or not.
+     * Returns if the current page have a brand or not.
      *
      * @since 1.0.0
      * @return bool
      */
-    function have_brand(){
+    public static function have_brand(){
         global $have_brand;
 
         return $have_brand; // Yep, it only returns the global...
