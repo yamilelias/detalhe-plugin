@@ -9,7 +9,9 @@
 ?>
 
 <div class="no-padding-sides col-lg-6 col-md-6 col-xs-6">
-    <a href="#">
-        <?php echo $image; ?>
-    </a>
+    <div class="item">
+        <a href="#">
+            <?php echo $image; ?>
+        </a>
+    </div>
 </div>
