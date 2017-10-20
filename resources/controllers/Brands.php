@@ -8,6 +8,7 @@
 
 namespace Com\Detalhe\Core\Controllers;
 
+use Com\Detalhe\Core\Helpers\Functions;
 use Themosis\Route\BaseController;
 use Themosis\Metabox\Meta;
 
@@ -43,15 +44,12 @@ class Brands extends BaseController
 
         self::$have_brand = false;
 
-        $social_items = social_media_used();
-        $brand_structure = array(
+        $brand = array(
             'ID'         => 0,
             'post_name'  => '',
             'post_title' => '',
             'logo'       => '',
         );
-
-        $brand = (object) array_merge($brand_structure, $social_items); // Let's create and scalable brand object
 
         // Let's avoid "Trying to get property of non-object" error
         if(!empty($post)){
@@ -78,7 +76,7 @@ class Brands extends BaseController
         // Assign the header if at the end exists a brand
         if(self::have_brand()){
             $banner_id = Meta::get($brand->ID, 'brand-header-banner', true); // Get the header banner ID
-            $brand->header_banner = wp_get_attachment_image_src($banner_id, 'full'); // Get the image
+            $brand->header_banner = Functions::image_array_to_object(wp_get_attachment_image_src($banner_id, 'full')); // Get the image
 
             $brand->color = Meta::get($brand->ID, 'brand-header-color'); // Get the color
         }
@@ -93,8 +91,6 @@ class Brands extends BaseController
      * @return bool
      */
     public static function have_brand(){
-        global $have_brand;
-
-        return $have_brand; // Yep, it only returns the global...
+        return self::$have_brand;
     }
 }

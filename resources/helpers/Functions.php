@@ -244,4 +244,21 @@ class Functions
 
         return $query_args;
     }
+
+    /**
+     * Transform an array of an image with it's properties to an object to apply the same in all the images.
+     *
+     * @see wp_get_attachment_image_src()
+     * @since 1.0.0
+     * @param array $image_array
+     * @return object
+     */
+    public static function image_array_to_object($image_array) {
+        return (object) array(
+            'url'              => $image_array[0],
+            'width'            => $image_array[1],
+            'height'           => $image_array[2],
+            'is_intermediate'  => $image_array[3],
+        );
+    }
 }
