@@ -3,7 +3,7 @@
 
 /**
  * Class Operator_Widget. This widget let you decide which card operator should be displayed.
- * FIXME: Save the value from the checkbox or do it hardcoded
+ * TODO: Save the value from a checkbox to avoid hardcoding
  *
  * @since       1.0.0
  * @author      Yamil Elias <yamil@wtf.style>
@@ -33,8 +33,17 @@ class Operator_Widget extends WP_Widget
      * @param array $instance
      */
     public function widget( $args, $instance ) {
+        $text = apply_filters( 'widget_text', $instance['text'] );
+
+        // before and after widget arguments are defined by themes
         echo $args['before_widget'];
-        echo view('com.detalhe.core.widgets.operators');
+
+        $text = ! empty($text) ? $text : 'Accepted payment methods:';
+
+        echo view('com.detalhe.core.widgets.operators', [
+            'text' => $text,
+        ]);
+
         echo $args['after_widget'];
     }
 
@@ -46,11 +55,11 @@ class Operator_Widget extends WP_Widget
      * @return string Admin form
      */
     public function form( $instance ) {
-        $instance['your_checkbox_var'] = 'on';
     ?>
         <p>
-            <input class="checkbox" type="checkbox" <?php checked( $instance[ 'your_checkbox_var' ], 'on' ); ?> id="<?php echo $this->get_field_id( 'your_checkbox_var' ); ?>" name="<?php echo $this->get_field_name( 'your_checkbox_var' ); ?>" />
-            <label for="<?php echo $this->get_field_id( 'your_checkbox_var' ); ?>">Label of your checkbox variable</label>
+            <label for="<?php echo $this->get_field_id( 'text' ); ?>"><?php _e( 'Display Text' ); ?></label>
+            <input class="widefat" id="<?php echo $this->get_field_id( 'text' ); ?>" name="<?php echo $this->get_field_name( 'text' ); ?>" type="text" value="Accepted payment methods:" />
+            <small class="text-muted">Fill the input with the text you want to show in the footer.</small>
         </p>
     <?php
     }
@@ -64,17 +73,10 @@ class Operator_Widget extends WP_Widget
      * @return array
      */
     public function update( $new_instance, $old_instance ) {
-//        $instance[ 'mastercard' ] = $new_instance[ 'mastercard' ];
-//        $instance[ 'visa' ] = $new_instance[ 'visa' ];
-//        $instance[ 'american-express' ] = $new_instance[ 'american-express' ];
-//        $instance[ 'paypal' ] = $new_instance[ 'paypal' ];
-
         $instance = $old_instance;
-        // Add this line
-        $instance[ 'your_checkbox_var' ] = !isset($new_instance[ 'your_checkbox_var' ]) ? $new_instance[ 'your_checkbox_var' ] : '';
-//        $instance[ 'your_checkbox_var' ] = $new_instance[ 'your_checkbox_var' ];
-        // Change 'your_checkbox_var' for your custom ID
-        // ...
+
+        $instance['text'] = ( ! empty( $new_instance['text'] ) ) ? strip_tags( $new_instance['text'] ) : '';
+
         return $instance;
     }
 }
