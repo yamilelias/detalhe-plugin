@@ -52,7 +52,7 @@ class Shortcodes extends BaseController
             $image = get_the_post_thumbnail($brand->ID);
 
             echo \view('com.detalhe.core.brands.preview',[
-                'brand' => $brand,
+                'brand_slug' => $brand->post_name,
                 'image' => $image
             ]);
         }

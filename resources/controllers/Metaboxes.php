@@ -57,6 +57,10 @@ class Metaboxes extends BaseController
                 'title'   => 'Brand Header Banner',
                 'info'    => 'Select a banner that will appear in header when the brand is active.'
             ]),
+            Field::color('brand-header-color', [
+                'title'   => 'Brand Header Color',
+                'info'    => 'Select a color that will appear in header when the header won\'t reach the borders of the page'
+            ]),
         ]);
     }
 

@@ -79,6 +79,8 @@ class Brands extends BaseController
         if(self::have_brand()){
             $banner_id = Meta::get($brand->ID, 'brand-header-banner', true); // Get the header banner ID
             $brand->header_banner = wp_get_attachment_image_src($banner_id, 'full'); // Get the image
+
+            $brand->color = Meta::get($brand->ID, 'brand-header-color'); // Get the color
         }
 
         return $brand;
