@@ -32,11 +32,14 @@ class Hooks extends BaseController
     public static function init() {
 //        Action::add('brands_view', 'Com\Detalhe\Core\Controllers\Hooks@show_existing_brands', 10);
         add_action('brands_view', [new Hooks(), 'show_existing_brands'], 10);
+
+        add_action('single_brand', [new Hooks(), 'show_other_brands_section'], 30);
     }
 
     /**
      * Show in the shop all the existing brands for the user to select them.
      *
+     * @see Shortcodes::our_brands()
      * @since 1.0.0
      */
     public static function show_existing_brands() {
@@ -53,10 +56,42 @@ class Hooks extends BaseController
 
             echo '<div class="container">';
 
-            // Call the shortcode depending if is multisite or single site environment
             $shortcode_content = storefront_do_shortcode( 'our_brands', array(
                 'limit' => intval( $args['limit'] )
             ) );
+
+            echo wp_kses_post( $shortcode_content );
+
+            echo '</div>';
+
+            echo '</section>';
+        }
+    }
+
+    /**
+     * Renders the other brands section in the brand template.
+     *
+     * @see Shortcodes::our_brands()
+     * @since  1.0.0
+     * @return void
+     */
+    public static function show_other_brands_section(){
+        // Only if the storefront is activated, if not, it won't work
+        if ( storefront_is_woocommerce_activated() ) {
+
+            $args = apply_filters( 'show_other_brands_section_args', array(
+                'limit' 			=> -1,
+//                'columns' 			=> 4,
+                'title'				=> __( 'Other Brands', 'storefront' ),
+            ) );
+
+            echo '<section class="storefront-product-section storefront-other_brands products" aria-label="' . esc_attr__( 'Other Brands', 'storefront' ) . '">';
+
+            echo '<div class="title"><h2 class="section-title">' . wp_kses_post( $args['title'] ) . '</h2></div>';
+
+            echo '<div class="show-brands">';
+
+            $shortcode_content = storefront_do_shortcode( 'other_brands' );
 
             echo wp_kses_post( $shortcode_content );
 

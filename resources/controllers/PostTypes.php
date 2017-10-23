@@ -63,7 +63,6 @@ class PostTypes extends BaseController
             'capability_type' => 'page',
             'hierarchical' => false,
             'has_archive' => false,
-            'query_var' => 'provider',
             'rewrite' => true,
             'can_export' => true,
             'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'page-attributes')

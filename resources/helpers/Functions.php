@@ -39,61 +39,44 @@ class Functions
         $woocommerce_loop['name']    = $loop_name;
         $query_args                  = apply_filters( 'woocommerce_shortcode_products_query', $query_args, $atts, $loop_name );
         $transient_name              = 'wc_loop' . substr( md5( json_encode( $query_args ) . $loop_name ), 28 ) . \WC_Cache_Helper::get_transient_version( 'product_query' );
-//        $products = get_transient( $transient_name );
+        $products                    = get_transient( $transient_name );
 
-        // Get parameters from view, if there aren't any, then put a default so it won't break
-        try {
-            $view_params = $atts['view_params'];
-        } catch(\Exception $e){
-            $view_params = array();
+        if ( false === $products || ! is_a( $products, 'WP_Query' ) ) {
+            $products = new \WP_Query( $query_args );
+            set_transient( $transient_name, $products, DAY_IN_SECONDS * 30 );
         }
-
-        $products = new \WP_Query($query_args);
-
-        set_transient( $transient_name, $products, DAY_IN_SECONDS * 30 );
 
         ob_start();
 
         if ($products->have_posts()) {
-            while ($products->have_posts()) : $products->the_post();
-                global $product;
+            echo '<script>console.log("Posts: ' . $products->have_posts() . '")</script>';
+            ?>
 
-                // Get the brand
-                $brand = Brands::get_current_brand();
+            <?php do_action( "woocommerce_shortcode_before_{$loop_name}_loop", $atts ); ?>
 
-                // Check the product availability
-                $availability = $product->get_availability();
-                $available = $availability['class'] == 'out-of-stock' ? false : true;
+            <?php woocommerce_product_loop_start(); ?>
 
-                $product_url = get_site_url() . '/product/' . $product->get_slug();
+            <?php while ( $products->have_posts() ) : $products->the_post(); ?>
 
-                $product_data = array(
-                    'brand'       => $brand,
-                    'available'   => $available,
-                    'product'     => $product,
-                    'product_url' => $product_url,
-                );
+                <?php wc_get_template_part( 'content', 'product' ); ?>
 
-                // Merge information in a single array
-                $data = array_merge($product_data, $view_params);
+            <?php endwhile; // end of the loop. ?>
 
-                try{
-                    echo view('homepage.product', $data); // Set view with params
-                } catch(\Error $e){
-                    echo view('homepage.product', $product_data);
-                } catch(\Exception $e){
-                    echo view('homepage.product', $product_data);
-                }
+            <?php woocommerce_product_loop_end(); ?>
 
-            endwhile;
+            <?php do_action( "woocommerce_shortcode_after_{$loop_name}_loop", $atts ); ?>
+
+            <?php
         } else {
             do_action( "woocommerce_shortcode_{$loop_name}_loop_no_results", $atts );
         }
 
+        $contents = ob_get_contents();
+
         woocommerce_reset_loop();
         wp_reset_postdata();
 
-        return ob_get_clean();
+        return '<div class="woocommerce columns-' . $columns . '">' . '' . '</div>';
     }
 
     /**

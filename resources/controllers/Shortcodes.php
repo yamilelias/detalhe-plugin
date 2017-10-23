@@ -8,7 +8,9 @@
 
 namespace Com\Detalhe\Core\Controllers;
 
+use Com\Detalhe\Core\Helpers\Functions;
 use Com\Detalhe\Core\Models\Brands;
+
 use Themosis\Route\BaseController;
 
 /**
@@ -30,7 +32,9 @@ class Shortcodes extends BaseController
 
         // Put in here all the shortcodes from the Controller
         $shortcodes = array(
-            'our_brands'                  => __CLASS__ . '::our_brands',
+            'our_brands'               => __CLASS__ . '::our_brands',
+            'other_brands'             => __CLASS__ . '::other_brands',
+            'brand_products'           => __CLASS__ . '::brand_products',
         );
 
         foreach ( $shortcodes as $shortcode => $function ) {
@@ -56,5 +60,69 @@ class Shortcodes extends BaseController
                 'image' => $image
             ]);
         }
+    }
+
+    /**
+     * This will deploy the Other Brands section in the Brand view.
+     *
+     * @since 1.0.0
+     * @param $atts
+     */
+    public static function other_brands($atts){
+        $query = Brands::get_all();
+        $brands = $query->get_posts();
+
+        foreach($brands as $brand){
+            $image = get_the_post_thumbnail($brand->ID);
+
+            echo \view('com.detalhe.core.brands.product-section',[
+                'brand_slug' => $brand->post_name,
+                'image' => $image
+            ]);
+        }
+    }
+
+    /**
+     * Show all the products that appears in the brand page.
+     *
+     * @since 1.0.0
+     * @param $atts
+     * @return string
+     */
+    public static function brand_products($atts) {
+        $atts = shortcode_atts( array(
+            'per_page' => '-1',
+            'columns'  => '4',
+            'orderby'  => 'date',
+            'order'    => 'desc',
+            'category' => '',  // Slugs
+            'operator' => 'IN', // Possible values are 'IN', 'NOT IN', 'AND'.
+        ), $atts, 'brand_products' );
+
+//        $meta_query  = WC()->query->get_meta_query();
+        $tax_query   = WC()->query->get_tax_query();
+        $tax_query[] = array(
+            'taxonomy' => 'product_visibility',
+            'field'    => 'name',
+            'terms'    => 'featured',
+            'operator' => 'IN',
+        );
+
+        $query_args = array(
+            'post_type'           => 'product',
+            'post_status'         => 'publish',
+            'ignore_sticky_posts' => 1,
+            'posts_per_page'      => $atts['per_page'],
+            'orderby'             => $atts['orderby'],
+            'order'               => $atts['order'],
+//            'meta_query'          => $meta_query,
+            'tax_query'           => $tax_query,
+        );
+
+        // Add extra args to the query
+        $query_args = Functions::add_brand_args($query_args);
+        $query_args = Functions::add_category_args( $query_args, $atts['category'], $atts['operator'] );
+
+        return Functions::product_loop_with_query( $query_args, $atts, 'brand_products' );
     }
 }
