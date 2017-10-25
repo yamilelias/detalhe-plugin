@@ -34,6 +34,10 @@ class Hooks extends BaseController
         add_action('brands_view', [new Hooks(), 'show_existing_brands'], 10);
 
         add_action('single_brand', [new Hooks(), 'show_other_brands_section'], 30);
+
+        add_action('woocommerce_shortcode_before_brand_products_loop', [new Hooks(), 'before_products_loop'], 10);
+        add_action('woocommerce_shortcode_after_brand_products_loop', [new Hooks(), 'after_products_loop'], 10);
+        add_action('woocommerce_shortcode_after_brand_products_loop', [new Hooks(), 'after_loop_pagination'], 20);
     }
 
     /**
@@ -99,5 +103,31 @@ class Hooks extends BaseController
 
             echo '</section>';
         }
+    }
+
+    public static function after_loop_pagination() {
+        $paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
+
+        $custom_args = array(
+            'post_type' => 'product',
+            'posts_per_page' => 2,
+            'paged' => $paged,
+            'meta_value'          => 'paquilia', // TODO: Change to any-brand value
+            'meta_key'            => 'product-brand',
+        );
+
+//        if (function_exists('custom_pagination')) {
+//            custom_pagination(2,"",$paged);
+//        }
+
+        woo_pagination( $custom_args );
+    }
+
+    public static function before_products_loop(){
+        do_action( 'woocommerce_before_shop_loop' );
+    }
+
+    public static function after_products_loop(){
+        do_action( 'woocommerce_after_shop_loop' );
     }
 }

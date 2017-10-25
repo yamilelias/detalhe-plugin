@@ -49,7 +49,6 @@ class Functions
         ob_start();
 
         if ($products->have_posts()) {
-            echo '<script>console.log("Posts: ' . $products->have_posts() . '")</script>';
             ?>
 
             <?php do_action( "woocommerce_shortcode_before_{$loop_name}_loop", $atts ); ?>
@@ -71,12 +70,10 @@ class Functions
             do_action( "woocommerce_shortcode_{$loop_name}_loop_no_results", $atts );
         }
 
-        $contents = ob_get_contents();
-
         woocommerce_reset_loop();
         wp_reset_postdata();
 
-        return '<div class="woocommerce columns-' . $columns . '">' . '' . '</div>';
+        return '<div class="woocommerce columns-' . $columns . '">' . ob_get_clean() . '</div>';
     }
 
     /**

@@ -81,6 +81,15 @@ class Admin extends BaseController
     }
 
     public static function create_other_subpages(){
+
+        /*
+         * Plugin Information View. Show up information from development environment.
+         */
+        $view = View::make('com.detalhe.core.admin.info');
+        Page::make('core-info', 'Detalhe Core', 'tools.php', $view)->set([
+            'capability' => 'manage_options',
+        ]);
+
         /*
          * PHP Info View. Literally only runs phpinfo() function to get what it have running.
          */

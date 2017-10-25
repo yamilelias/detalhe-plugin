@@ -91,22 +91,13 @@ class Shortcodes extends BaseController
      */
     public static function brand_products($atts) {
         $atts = shortcode_atts( array(
-            'per_page' => '-1',
+            'per_page' => '4',
             'columns'  => '4',
-            'orderby'  => 'date',
+            'orderby'  => 'menu_order',
             'order'    => 'desc',
             'category' => '',  // Slugs
             'operator' => 'IN', // Possible values are 'IN', 'NOT IN', 'AND'.
         ), $atts, 'brand_products' );
-
-//        $meta_query  = WC()->query->get_meta_query();
-        $tax_query   = WC()->query->get_tax_query();
-        $tax_query[] = array(
-            'taxonomy' => 'product_visibility',
-            'field'    => 'name',
-            'terms'    => 'featured',
-            'operator' => 'IN',
-        );
 
         $query_args = array(
             'post_type'           => 'product',
@@ -115,8 +106,6 @@ class Shortcodes extends BaseController
             'posts_per_page'      => $atts['per_page'],
             'orderby'             => $atts['orderby'],
             'order'               => $atts['order'],
-//            'meta_query'          => $meta_query,
-            'tax_query'           => $tax_query,
         );
 
         // Add extra args to the query
