@@ -30,14 +30,14 @@ class Hooks extends BaseController
      * @since 1.0.0
      */
     public static function init() {
-//        Action::add('brands_view', 'Com\Detalhe\Core\Controllers\Hooks@show_existing_brands', 10);
         add_action('brands_view', [new Hooks(), 'show_existing_brands'], 10);
 
         add_action('single_brand', [new Hooks(), 'show_other_brands_section'], 30);
 
-        add_action('woocommerce_shortcode_before_brand_products_loop', [new Hooks(), 'before_products_loop'], 10);
-        add_action('woocommerce_shortcode_after_brand_products_loop', [new Hooks(), 'after_products_loop'], 10);
-//        add_action('woocommerce_shortcode_after_brand_products_loop', [new Hooks(), 'after_loop_pagination'], 20);
+        add_action('subcategories_filters', [new Hooks(), 'generate_subcategories_filters'], 10);
+        
+        add_action('save_post_brand', [new Hooks(), 'create_term_when_brand_created'], 20);
+//        add_action('delete_post', [new Hooks(), 'delete_term_when_brand_deleted'], 20);
     }
 
     /**
@@ -105,29 +105,127 @@ class Hooks extends BaseController
         }
     }
 
-    public static function after_loop_pagination() {
-        $paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
+    /**
+     * This will generate the filters for each category in the category view.
+     *
+     * @since 1.0.0
+     */
+    public static function generate_subcategories_filters() {
+        $term = get_queried_object();
+        $children = get_term_children($term->term_id, $term->taxonomy);
 
-        $custom_args = array(
-            'post_type' => 'product',
-            'posts_per_page' => 2,
-            'paged' => $paged,
-            'meta_value'          => 'paquilia', // TODO: Change to any-brand value
-            'meta_key'            => 'product-brand',
+        foreach( $children as $child) {
+            $subcategory = get_term($child);
+
+            echo '<a href="'. get_site_url() . '/product-category/' . $subcategory->slug .'">
+                    <button class="submit sub-categories">'
+                        . $subcategory->name . '
+                    </button>
+                  </a>';
+        }
+    }
+
+    /**
+     * This will create a term so is linked directly to the brand post type object.
+     *
+     * @param int $post_id
+     * @since 1.0.0
+     * @see wp_insert_term()
+     * @see wp_update_term()
+     * @see add_term_meta()
+     * @see update_term_meta()
+     */
+    public static function create_term_when_brand_created($post_id) {
+        $post = get_post($post_id); // Get the post
+
+        // Don't do anything if is not a brand post type
+        if($post->post_type != 'brand'){
+            return;
+        }
+
+        // Remove the function to avoid an infinite loop
+        remove_action( 'save_post_brand', 'set_private_categories', 13 );
+
+        /*
+         * Get the attributes that will be updated
+         */
+        $attributes = array(
+            'description' => '',
+            'slug'        => '',
         );
 
-//        if (function_exists('custom_pagination')) {
-//            custom_pagination(2,"",$paged);
-//        }
+        if(isset($_POST['post_content'])){
+            $attributes['description'] = $post->post_content;
+        }
 
-        woo_pagination( $custom_args );
+        if(isset($_POST['post_name'])){
+            $attributes['slug'] = $post->post_name;
+        }
+
+        // If it already exists then update
+        if(term_exists($post->post_name, 'product_cat')) {
+            $term = get_term_by('slug', $post->post_name, 'product_cat');
+
+            // Update term
+            wp_update_term(
+                $term->term_id,
+                $term->taxonomy,
+                $attributes
+            );
+
+            // Update its meta
+            update_term_meta(
+                $term->term_id,
+                'thumbnail_id',
+                get_post_thumbnail_id($post->ID)
+            );
+        } else {
+            // Create product category
+            $term = wp_insert_term(
+                $post->post_title,
+                'product_cat', // set as a product category
+                $attributes
+            );
+
+            // Validate its not a WP_Error
+            if(is_array($term)){
+                // Create its meta
+                add_term_meta(
+                    $term['term_id'],
+                    'thumbnail_id',
+                    get_post_thumbnail_id($post->ID) // Get the ID of the image set to the post
+                );
+            }
+        }
+
+        // Re-hook this function
+        add_action( 'save_post_brand', 'set_private_categories', 13, 2 );
     }
 
-    public static function before_products_loop(){
-        do_action( 'woocommerce_before_shop_loop' );
-    }
+    /**
+     * When the brand is deleted, then delete it's category and children.
+     * FIXME: Children category can't be deleted, it only works with the term
+     *
+     * @param int $post_id
+     * @since 1.0.0
+     * @see wp_delete_term()
+     */
+    public static function delete_term_when_brand_deleted($post_id){
+        $post = get_post($post_id);
 
-    public static function after_products_loop(){
-        do_action( 'woocommerce_after_shop_loop' );
+        // Get the category from brand
+        $term = get_term_by('slug', $post->post_name, 'product_cat');
+
+        $children = get_term_children($term->term_id, $term->taxonomy);
+
+        // Delete its children
+        if(!empty($children)){
+            foreach ($children as $child){
+                wp_delete_term($child, 'product_cat');
+            }
+        }
+
+        // Delete term
+        wp_delete_term($term->term_id, $term->taxonomy);
     }
 }
