@@ -114,15 +114,19 @@ class Hooks extends BaseController
         $term = get_queried_object();
         $children = get_term_children($term->term_id, $term->taxonomy);
 
+        echo '<div class="subcategories">';
+
         foreach( $children as $child) {
             $subcategory = get_term($child);
 
             echo '<a href="'. get_site_url() . '/product-category/' . $subcategory->slug .'">
-                    <button class="submit sub-categories">'
+                    <button class="submit subcategory">'
                         . $subcategory->name . '
                     </button>
                   </a>';
         }
+
+        echo '</div>';
     }
 
     /**
