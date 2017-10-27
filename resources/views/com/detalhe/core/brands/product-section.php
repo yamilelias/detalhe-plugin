@@ -9,7 +9,7 @@
 
 <div class="col-lg-2 col-md-2 col-xs-2">
     <div class="item">
-        <a href="<?php echo get_site_url() . '/' . $brand_slug ?>">
+        <a href="<?php echo get_site_url() . '/product-category/' . $brand_slug ?>">
             <?php echo $image; ?>
         </a>
     </div>

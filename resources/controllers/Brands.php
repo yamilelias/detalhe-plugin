@@ -31,14 +31,19 @@ class Brands extends BaseController
     /**
      * Validate in which brand the user is, if is not in any brand return empty string.
      *
-     * @updated 1.0.1
      * @since  1.0.0
-     * @return object
+     * @param array $default Give the default brand you want
+     * @return object Returns a brand object that will return all the needed information
      */
-    public static function get_current_brand() {
+    public static function get_current_brand($default = array()) {
         $post = is_singular() ? get_queried_object() : false;
 
-        if(! $post instanceOf \WP_Post){
+        // If an object is passed, then use it for the brand
+        if($default){
+            $post = (object)$default;
+            $post->post_type = 'default';
+        }
+         else if(! $post instanceOf \WP_Post){
             $post = get_post();
         }
 
@@ -53,23 +58,39 @@ class Brands extends BaseController
 
         // Let's avoid "Trying to get property of non-object" error
         if(!empty($post)){
-            if($post->post_type == 'brand'){
-                $brand = $post; // Set it as it is
+            switch($post->post_type) {
+                case 'brand':
+                    $brand = $post; // Set it as it is
 
-                self::$have_brand = true;
-            }
-
-            if($post->post_type == 'product'){
-                $slug = Meta::get($post->ID, 'product-brand', true); // Get brand slug
-                $brand_meta = get_page_by_path($slug, OBJECT, 'brand'); // Get brand information
-
-                // Check it again if it not ended up null...
-                if($brand_meta == null){
-                    self::$have_brand = false;
-                } else {
-                    $brand = $brand_meta; // If is not null, then pass it as a brand
                     self::$have_brand = true;
-                }
+
+                    break;
+                case 'product':
+                    $slug = Meta::get($post->ID, 'product-brand', true); // Get brand slug
+                    $brand_meta = get_page_by_path($slug, OBJECT, 'brand'); // Get brand information
+
+                    // Check it again if it not ended up null...
+                    if($brand_meta == null){
+                        self::$have_brand = false;
+                    } else {
+                        $brand = $brand_meta; // If is not null, then pass it as a brand
+                        self::$have_brand = true;
+                    }
+
+                    break;
+                case 'default':
+                    $args = array(
+                        'name'           => $default['slug'],
+                        'post_type'      => 'brand',
+                        'post_status'    => 'publish',
+                        'posts_per_page' => 1
+                    );
+                    $my_posts = get_posts( $args ); // Get brand by slug
+
+                    $brand = $my_posts[0];
+                    self::$have_brand = true;
+
+                    break;
             }
         }
 

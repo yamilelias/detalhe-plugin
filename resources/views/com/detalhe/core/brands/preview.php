@@ -10,7 +10,7 @@
 
 <div class="no-padding-sides col-lg-6 col-md-6 col-xs-6">
     <div class="item">
-        <a href="<?php echo get_site_url() . '/' . $brand_slug ?>">
+        <a href="<?php echo get_site_url() . '/product-category/' . $brand_slug ?>">
             <?php echo $image; ?>
         </a>
     </div>

@@ -49,6 +49,8 @@ class Admin extends BaseController
 
         self::create_admin_subpages('configuration');
         self::create_admin_settings($page);
+
+        self::remove_other_pages();
     }
 
     /**
@@ -107,5 +109,16 @@ class Admin extends BaseController
         Page::make('wp-hooks', 'WP Hooks', 'tools.php', $view)->set([
             'capability' => 'manage_options',
         ]);
+    }
+
+    /**
+     * Remove any other unneeded pages that where added to the site.
+     *
+     * @since 1.0.0
+     */
+    public static function remove_other_pages() {
+       if(is_woocommerce_activated()) {
+           remove_submenu_page('themes.php', 'storefront-welcome');
+       }
     }
 }

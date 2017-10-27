@@ -37,7 +37,7 @@ class Hooks extends BaseController
 
         add_action('woocommerce_shortcode_before_brand_products_loop', [new Hooks(), 'before_products_loop'], 10);
         add_action('woocommerce_shortcode_after_brand_products_loop', [new Hooks(), 'after_products_loop'], 10);
-        add_action('woocommerce_shortcode_after_brand_products_loop', [new Hooks(), 'after_loop_pagination'], 20);
+//        add_action('woocommerce_shortcode_after_brand_products_loop', [new Hooks(), 'after_loop_pagination'], 20);
     }
 
     /**
