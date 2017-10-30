@@ -112,17 +112,31 @@ class Hooks extends BaseController
      */
     public static function generate_subcategories_filters() {
         $term = get_queried_object();
-        $children = get_term_children($term->term_id, $term->taxonomy);
+
+        // If is a subcategory, we should get also their brothers
+        if($term->parent != 0) {
+            $parent = get_term($term->parent);
+
+            $term = $parent;
+        }
+
+        $categories = get_term_children($term->term_id, $term->taxonomy);
 
         echo '<div class="subcategories">';
 
-        foreach( $children as $child) {
-            $subcategory = get_term($child);
-
-            echo '<a href="'. get_site_url() . '/product-category/' . $subcategory->slug .'">
+        echo '<a href="'. get_site_url() . '/product-category/' . $term->slug . '">
                     <button class="submit subcategory">'
-                        . $subcategory->name . '
-                    </button>
+                        . __( 'All', 'storefront' ) .
+                   '</button>
+                  </a>';
+
+        foreach( $categories as $category) {
+            $subcategory = get_term($category);
+
+            echo '<a href="'. get_site_url() . '/product-category/' . $term->slug . '/' . $subcategory->slug .'">
+                    <button class="submit subcategory">'
+                        . $subcategory->name .
+                   '</button>
                   </a>';
         }
 

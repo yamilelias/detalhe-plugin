@@ -79,8 +79,18 @@ class Brands extends BaseController
 
                     break;
                 case 'default':
+
+                    $slug = $default['slug'];
+
+                    // If is a subcategory, then get the parent for the slug
+                    if($default['parent'] != 0){
+                        $parent = get_term($default['parent']);
+
+                        $slug = $parent->name;
+                    }
+
                     $args = array(
-                        'name'           => $default['slug'],
+                        'name'           => $slug,
                         'post_type'      => 'brand',
                         'post_status'    => 'publish',
                         'posts_per_page' => 1
@@ -88,6 +98,7 @@ class Brands extends BaseController
                     $my_posts = get_posts( $args ); // Get brand by slug
 
                     $brand = $my_posts[0];
+
                     self::$have_brand = true;
 
                     break;
