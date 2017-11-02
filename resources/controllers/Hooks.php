@@ -8,9 +8,6 @@
 
 namespace Com\Detalhe\Core\Controllers;
 
-use Com\Detalhe\Core\Models\Brands;
-
-use Themosis\Facades\Action;
 use Themosis\Route\BaseController;
 
 /**
@@ -35,6 +32,8 @@ class Hooks extends BaseController
         add_action('single_brand', [new Hooks(), 'show_other_brands_section'], 30);
 
         add_action('subcategories_filters', [new Hooks(), 'generate_subcategories_filters'], 10);
+
+        add_action('woocommerce_before_single_product', [new Hooks(), 'generate_subcategories_filters'], 10);
         
         add_action('save_post_brand', [new Hooks(), 'create_term_when_brand_created'], 20);
 //        add_action('delete_post', [new Hooks(), 'delete_term_when_brand_deleted'], 20);
@@ -113,11 +112,23 @@ class Hooks extends BaseController
     public static function generate_subcategories_filters() {
         $term = get_queried_object();
 
-        // If is a subcategory, we should get also their brothers
-        if($term->parent != 0) {
-            $parent = get_term($term->parent);
+        /*
+         * Define what type of object we got
+         */
+        if($term instanceof \WP_Term) {
 
-            $term = $parent;
+            // If is a subcategory, we should get also their brothers
+            if($term->parent != 0) {
+                $parent = get_term($term->parent);
+
+                $term = $parent;
+            }
+        } else if($term instanceof \WP_Post) {
+            $brand = Brands::get_current_brand();
+
+            // Now we have the brand, convert it to a WP_Term object
+            $term = get_term_by('slug', $brand->post_name, 'product_cat');
+
         }
 
         $categories = get_term_children($term->term_id, $term->taxonomy);
@@ -126,7 +137,7 @@ class Hooks extends BaseController
 
         echo '<a href="'. get_site_url() . '/product-category/' . $term->slug . '">
                     <button class="submit subcategory">'
-                        . __( 'All', 'storefront' ) .
+                        . __( 'Todos', 'storefront' ) .
                    '</button>
                   </a>';
 

@@ -50,14 +50,6 @@ add_action('admin_notices', function () use ($vars) {
     if (!class_exists('\Themosis\Foundation\Application')) {
         printf('<div class="notice notice-error"><p>%s</p></div>', __('This plugin requires the Themosis framework in order to work.', DETALHE_CORE_TD));
     }
-
-    /*
-     * Define your plugin theme support key. Once defined, make sure to add the key
-     * into your theme `supports.config.php` in order to remove this admin notice.
-     */
-    if (!current_theme_supports($vars['slug']) && current_user_can('switch_themes')) {
-//        printf('<div class="notice notice-warning"><p>%s<strong>%s</strong></p></div>', __('Your application does not handle the following plugin: ', DETALHE_CORE_TD), $vars['name']);
-    }
 });
 
 /*
