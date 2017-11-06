@@ -78,8 +78,10 @@ class Shortcodes extends BaseController
         foreach($brands as $brand){
             $image = get_the_post_thumbnail($brand->ID);
 
+            $brand = Brand::get_current_brand_as_term($brand->post_name);
+
             echo \view('com.detalhe.core.brands.product-section',[
-                'brand_slug' => $brand->post_name,
+                'brand_term' => $brand,
                 'image' => $image
             ]);
         }

@@ -9,8 +9,9 @@
 
 <div class="col-lg-2 col-md-2 col-xs-2">
     <div class="item">
-        <a href="<?php echo get_site_url() . '/product-category/' . $brand_slug ?>">
+        <a href="<?php echo get_term_link( $brand_term ) ?>" class="brand-link">
             <?php echo $image; ?>
+            <p><?php echo $brand_term->name ?></p>
         </a>
     </div>
 </div>
