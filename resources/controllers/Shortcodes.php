@@ -10,6 +10,7 @@ namespace Com\Detalhe\Core\Controllers;
 
 use Com\Detalhe\Core\Helpers\Functions;
 use Com\Detalhe\Core\Models\Brands;
+use Com\Detalhe\Core\Controllers\Brands as Brand;
 
 use Themosis\Route\BaseController;
 
@@ -55,8 +56,10 @@ class Shortcodes extends BaseController
         foreach($brands as $brand){
             $image = get_the_post_thumbnail($brand->ID);
 
+            $brand = Brand::get_current_brand_as_term($brand->post_name);
+
             echo \view('com.detalhe.core.brands.preview',[
-                'brand_slug' => $brand->post_name,
+                'brand_term' => $brand,
                 'image' => $image
             ]);
         }

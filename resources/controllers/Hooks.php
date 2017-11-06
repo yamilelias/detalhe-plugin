@@ -124,34 +124,32 @@ class Hooks extends BaseController
                 $term = $parent;
             }
         } else if($term instanceof \WP_Post) {
-            $brand = Brands::get_current_brand();
-
-            // Now we have the brand, convert it to a WP_Term object
-            $term = get_term_by('slug', $brand->post_name, 'product_cat');
-
+            $term = Brands::get_current_brand_as_term();
         }
 
-        $categories = get_term_children($term->term_id, $term->taxonomy);
+        if($term){
+            $categories = get_term_children($term->term_id, $term->taxonomy);
 
-        echo '<div class="subcategories">';
+            echo '<div class="subcategories">';
 
-        echo '<a href="'. get_site_url() . '/product-category/' . $term->slug . '">
+            echo '<a href="' . get_term_link( $term ) . '">
                     <button class="submit subcategory">'
-                        . __( 'Todos', 'storefront' ) .
-                   '</button>
+                . __( 'Todos', 'storefront' ) .
+                '</button>
                   </a>';
 
-        foreach( $categories as $category) {
-            $subcategory = get_term($category);
+            foreach( $categories as $category) {
+                $subcategory = get_term($category);
 
-            echo '<a href="'. get_site_url() . '/product-category/' . $term->slug . '/' . $subcategory->slug .'">
+                echo '<a href="' . get_term_link( $subcategory ) . '">
                     <button class="submit subcategory">'
-                        . $subcategory->name .
-                   '</button>
+                    . $subcategory->name .
+                    '</button>
                   </a>';
+            }
+
+            echo '</div>';
         }
-
-        echo '</div>';
     }
 
     /**

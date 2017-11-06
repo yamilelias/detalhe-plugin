@@ -122,7 +122,46 @@ class Brands extends BaseController
      * @since 1.0.0
      * @return bool
      */
-    public static function have_brand(){
+    public static function have_brand() {
         return self::$have_brand;
+    }
+
+    /**
+     * Return the current brand but as a WP_Term object. It can be provided a slug, ID or object for this.
+     *
+     * @since 1.0.0
+     * @param string|int|object $term The term object, ID, or slug whose brand will be retrieved.
+     * @return array|false|\WP_Term Brand as a WP_Term object.
+     */
+    public static function get_current_brand_as_term($term = '') {
+        $brand_term = '';
+
+        if($term) {
+            if ( !is_object($term) ) {
+                if ( is_int( $term ) ) {
+                    $brand_term = get_term( $term, 'product_cat' );
+                } else {
+                    $brand_term = get_term_by( 'slug', $term, 'product_cat' );
+                }
+            } else {
+                $brand_term = get_term_by( 'slug', $term->slug, 'product_cat' );
+            }
+
+            // Validations if for being an object and for an error provided to the function
+            if ( !is_object($term) )
+                $term = new \WP_Error('invalid_term', __('Empty Term'));
+
+            if ( is_wp_error( $term ) )
+                return $brand_term;
+
+
+        } else {
+            $brand = self::get_current_brand();
+
+            // Now we have the brand, convert it to a WP_Term object
+            $brand_term = get_term_by('slug', $brand->post_name, 'product_cat');
+        }
+
+        return $brand_term;
     }
 }
