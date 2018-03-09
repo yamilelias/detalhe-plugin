@@ -8,7 +8,7 @@
 ?>
 <div class="information-widget">
     <div class="row">
-        <a href="<?php echo get_site_url() . $terms ?>"><p class="terms">Terms and Conditions</p></a>
+        <a href="<?php echo get_site_url() . $terms ?>"><p class="terms">Términos y Condiciones</p></a>
         <p class="copyright"><?php echo $copyright; ?></p>
     </div>
 </div>

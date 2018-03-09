@@ -10,7 +10,7 @@ use Themosis\Facades\Form;
 
 ?>
 
-<h3>Contact</h3>
+<h3>Contacto</h3>
 {!! Form::open(get_template_directory_uri() . '/mailing.php', 'post', false, [
     'class'       => 'footer-form',
     'id'          => 'register-form'
@@ -19,41 +19,23 @@ use Themosis\Facades\Form;
 
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 
-        <strong>Thank you!</strong> Your subscription is complete.
+        <strong>¡Gracias!</strong> Hemos recibido tu correo y nos pondremos en contacto pronto.
     </div>
     {!! Form::text('name', '', [
     'class'       => 'input-name',
-    'placeholder' => 'Name'
+    'placeholder' => 'Nombre'
     ]) !!}
     {!! Form::text('email', '', [
         'class'       => 'input-email',
-        'placeholder' => 'your@mail.com'
+        'placeholder' => 'nombre@tucorreo.com'
     ]) !!}
     {!! Form::textarea('message', '', [
         'class' => 'input-message',
-        'placeholder' => 'Message',
+        'placeholder' => 'Mensaje',
         'cols' => 50,
         'rows' => 2
         ]) !!}
-    {!! Form::submit('submit', 'Submit', [
+    {!! Form::submit('submit', 'Enviar', [
         'id' => 'awesome',
         'class' => 'submit',]) !!}
 {!! Form::close() !!}
-
-
-{{--<form class="footer-form" action="mailto:hola@detalhe.com.mx" method="post" enctype="text/plain">--}}
-    {{--<div style="display:none;" class="newsletter-success alert alert-success alert-dismissable fade in">--}}
-
-        {{--<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>--}}
-
-        {{--<strong>Thank you!</strong> Your subscription is complete.--}}
-    {{--</div>--}}
-    {{--<input class="input-name" type="text" name="name" placeholder="name" size="12">--}}
-    {{--<input class="input-email" type="email" name="email" placeholder="your@mail.com" size="12">--}}
-    {{--<br>--}}
-    {{--<textarea class="input-message" name="message" placeholder="Message" rows="4" cols="10"></textarea>--}}
-    {{--<br>--}}
-    {{--<button class="submit">Submit</button>--}}
-{{--</form>--}}
-
-

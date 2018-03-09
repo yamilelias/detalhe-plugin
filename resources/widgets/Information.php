@@ -17,8 +17,8 @@ class Information_Widget extends WP_Widget
     public function __construct()
     {
         $params = [
-            'description' => 'Display terms and conditions and copyright in a widget.',
-            'name'        => 'Detalhe Information'
+            'description' => 'Despliega términos, condiciones y los derechos reservados.',
+            'name'        => 'Aviso de privacidad y derechos'
         ];
 
         parent::__construct('Information_Widget', '', $params);
@@ -39,7 +39,7 @@ class Information_Widget extends WP_Widget
         echo $args['before_widget'];
 
         $terms = ! empty($terms) ? $terms : '/terms-and-conditions';
-        $copyright = ! empty($copyright) ? $copyright : 'Copyright 2017 &copy;';
+        $copyright = ! empty($copyright) ? $copyright : 'Copyright 2018 &copy;';
 
         echo view('com.detalhe.core.widgets.information', [
                 'copyright' => $copyright,
@@ -61,14 +61,14 @@ class Information_Widget extends WP_Widget
             $terms = $instance[ 'terms' ];
         }
         else {
-            $terms = __( 'Terms & Conditions', 'Information_Widget' );
+            $terms = __( 'Términos y Condiciones', 'Information_Widget' );
         }
 
         if ( isset( $instance[ 'copyright' ] ) ) {
             $copyright = $instance[ 'copyright' ];
         }
         else {
-            $copyright = __( 'Copyright', 'Information_Widget' );
+            $copyright = __( 'Derechos reservados', 'Information_Widget' );
         }
 
         // Widget admin form
@@ -76,12 +76,11 @@ class Information_Widget extends WP_Widget
         <p>
             <label for="<?php echo $this->get_field_id( 'terms' ); ?>"><?php _e( 'Terms & Conditions:' ); ?></label>
             <input class="widefat" id="<?php echo $this->get_field_id( 'terms' ); ?>" name="<?php echo $this->get_field_name( 'terms' ); ?>" type="text" value="/terms-and-conditions" />
-            <small class="text-muted">Please add a relative path to the terms & conditions page. Example: '/terms-and-conditions' or '/pages/terms'</small>
+            <small class="text-muted">Favor de agregar una ruta relativa para la página de términos y condiciones. Ejemplo: '/terms-and-conditions' o '/pages/terms'</small>
         </p>
         <p>
             <label for="<?php echo $this->get_field_id( 'copyright' ); ?>"><?php _e( 'Copyright:' ); ?></label>
             <input class="widefat" id="<?php echo $this->get_field_id( 'copyright' ); ?>" name="<?php echo $this->get_field_name( 'copyright' ); ?>" type="text" value="<?php echo esc_attr( $copyright ); ?>" />
-<!--            <small class="text-muted">Set your copyright message. Hint: to add copyright symbol (&#169;) please add this code: <code>--><?php //htmlentities('&copy;') ?><!--</code>.</code></small>-->
         </p>
         <?php
     }

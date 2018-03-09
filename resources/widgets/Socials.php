@@ -16,8 +16,8 @@ class Socials_Widget extends WP_Widget
     public function __construct()
     {
         $params = [
-            'description' => 'You have social media accounts? Show it to your customers!',
-            'name'        => 'Social Media Pages'
+            'description' => '¿Tienes redes sociales? ¡Muéstraselas a tus clientes!',
+            'name'        => 'Íconos de redes sociales'
         ];
 
         parent::__construct('Socials_Widget', '', $params);

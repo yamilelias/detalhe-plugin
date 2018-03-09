@@ -47,10 +47,10 @@ class PostTypes extends BaseController
      * @param $customizer
      */
     public static function brands_posttype($customizer){
-        PostType::make('brand', 'Brand', 'Brand')->set([
-            'label' => 'Brand',
-            'labels' => Components::create_labels('brand'),
-            'description' => 'Existing brands from WTF',
+        PostType::make('brand', 'Marca', 'Brand')->set([
+            'label' => 'Marca',
+            'labels' => Components::create_labels('marca'),
+            'description' => 'Marcas dentro del negocio',
             'public' => true,
             'exclude_from_search' => true,
             'publicly_queryable' => true,

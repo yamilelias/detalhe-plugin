@@ -18,8 +18,8 @@ class Operator_Widget extends WP_Widget
     public function __construct()
     {
         $params = [
-            'description' => 'Select the card operators you want to show.',
-            'name'        => 'Card Operators'
+            'description' => 'Ingresa los operadores financieros que deseas mostrar.',
+            'name'        => 'Operadores Financieros'
         ];
 
         parent::__construct('Operator_Widget', '', $params);
@@ -38,7 +38,7 @@ class Operator_Widget extends WP_Widget
         // before and after widget arguments are defined by themes
         echo $args['before_widget'];
 
-        $text = ! empty($text) ? $text : 'Accepted payment methods:';
+        $text = ! empty($text) ? $text : 'Métodos de pago aceptados:';
 
         echo view('com.detalhe.core.widgets.operators', [
             'text' => $text,
@@ -57,9 +57,9 @@ class Operator_Widget extends WP_Widget
     public function form( $instance ) {
     ?>
         <p>
-            <label for="<?php echo $this->get_field_id( 'text' ); ?>"><?php _e( 'Display Text' ); ?></label>
-            <input class="widefat" id="<?php echo $this->get_field_id( 'text' ); ?>" name="<?php echo $this->get_field_name( 'text' ); ?>" type="text" value="Accepted payment methods:" />
-            <small class="text-muted">Fill the input with the text you want to show in the footer.</small>
+            <label for="<?php echo $this->get_field_id( 'text' ); ?>"><?php _e( 'Texto' ); ?></label>
+            <input class="widefat" id="<?php echo $this->get_field_id( 'text' ); ?>" name="<?php echo $this->get_field_name( 'text' ); ?>" type="text" value="Métodos de pago aceptados:" />
+            <small class="text-muted">Ingresa el texto que deseas que se muestre.</small>
         </p>
     <?php
     }

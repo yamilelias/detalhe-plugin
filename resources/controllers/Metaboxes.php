@@ -48,18 +48,18 @@ class Metaboxes extends BaseController
      * @since 1.0.0
      */
     public static function items_needed_for_brands(){
-        Metabox::make('Customized Brand', 'brand', [
+        Metabox::make('Personalizar sección de marca', 'brand', [
             'context'  => 'normal',
             'priority' => 'high',
             'id'       => 'brand-banner-metabox'
         ])->set([
             Field::media('brand-header-banner', [
-                'title'   => 'Brand Header Banner',
-                'info'    => 'Select a banner that will appear in header when the brand is active.'
+                'title'   => 'Encabezado',
+                'info'    => 'Selecciona un banner que aparecerá en el encabezado cuando la marca esté activa.'
             ]),
             Field::color('brand-header-color', [
-                'title'   => 'Brand Header Color',
-                'info'    => 'Select a color that will appear in header when the header won\'t reach the borders of the page'
+                'title'   => 'Color del encabezado',
+                'info'    => 'Selecciona un color que aparecerá cuando la pantalla exceda las dimensiones de la imagen.'
             ]),
         ]);
     }
@@ -81,7 +81,7 @@ class Metaboxes extends BaseController
             $options = array_merge($options, Functions::set_query_to_array($model));
         }
 
-        Metabox::make('Brands', 'product', [
+        Metabox::make('Marca', 'product', [
             'context'  => 'side',
             'priority' => 'low',
             'id'       => 'brands-metabox'

@@ -45,7 +45,7 @@ class Contact_Widget extends WP_Widget
      * @return string Admin form
      */
     public function form( $instance ) {
-
+		// TODO: Add widget backend
     }
 
     /**
